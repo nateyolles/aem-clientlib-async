@@ -1,0 +1,53 @@
+<!--/*
+**
+* This Sightly component overlays the default AEM 6 component located at
+* /libs/granite/sightly/templates/clientlib.html and contains two updates.
+* 
+* 1) The addition of the "loading" parameter. This parameter accepts "async"
+* and "defer" and only affects JavaScript output.
+*
+* 2) Changing the data-sly-use value to use the overlayed Java class. If you
+* want to add the Java class to your custom package, you only need to update
+* this value.
+*
+* @author    Nate Yolles <yolles@adobe.com>
+* @version   0.1
+* @since     2015-03-19
+*/-->
+
+<!--/*
+    Template used for including CSS client libraries
+*/-->
+<template data-sly-template.css="${@ categories='Client Library categories'}">
+    <section data-sly-test="${request.getResourceResolver}"
+             data-sly-use.clientlib="${'/apps/clientlib-async-sample/sightly/templates/graniteClientLib.html'}"
+             data-sly-call="${clientlib.include @ categories=categories, mode='css'}"
+             data-sly-unwrap>
+    </section>
+</template>
+
+<!--/*
+    Template used for including JS client libraries
+*/-->
+<template data-sly-template.js="${@ categories='Client Library categories',
+                                    loading='Accepts async and defer',
+                                    onload='JavaScript to run for async and defer'}">
+    <section data-sly-test="${request.getResourceResolver}"
+             data-sly-use.clientlib="${'/apps/clientlib-async-sample/sightly/templates/graniteClientLib.html'}"
+             data-sly-call="${clientlib.include @ categories=categories, mode='js', loading=loading, onload=onload}"
+             data-sly-unwrap>
+    </section>
+</template>
+
+<!--/*
+    Template used for including ALL client libraries
+*/-->
+<template data-sly-template.all="${@ categories='Client Library categories',
+                                     loading='Accepts async and defer',
+                                     onload='JavaScript to run for async and defer'}">
+    <section data-sly-test="${request.getResourceResolver}"
+             data-sly-use.clientlib="${'/apps/clientlib-async-sample/sightly/templates/graniteClientLib.html'}"
+             data-sly-call="${clientlib.include @ categories=categories, loading=loading, onload=onload}"
+             data-sly-unwrap>
+    </section>
+</template>

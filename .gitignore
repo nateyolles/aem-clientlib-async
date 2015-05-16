@@ -1,0 +1,11 @@
+target
+.idea
+.classpath
+.project
+.settings
+.vlt
+.DS_Store
+.vlt-sync-config.properties
+.vlt-sync.log
+.brackets.json
+.metadata/
