@@ -23,7 +23,7 @@ You can build and deploy to a running AEM instance with default values of port *
 
 ## View sample
 
-After building and deploying, navigate to [the sample page](http://localhost:4502/content/clientlib-async-sample/en.html). View the source to verify that the *clientlib-async-sample.js* script element has the *async* void attribute and the *onload* attribute with a value of *sayHello()*.
+After building and deploying, navigate to the sample page at [/content/clientlib-async-sample/en.html](http://localhost:4502/content/clientlib-async-sample/en.html). View the source to verify that the *clientlib-async-sample.js* script element has the *async* void attribute and the *onload* attribute with a value of *sayHello()*.
 
 ## Using the updated clientlibs
 
