@@ -44,6 +44,19 @@ Use the clientlibs in your Sightly markup just as you would before (see [Sightly
 </head>
 ```
 
+## Using 'async', 'defer' and 'onload'
+
+```
+<!--/* async */-->
+<meta data-sly-call="${clientLib.js @ categories='your.clientlib', loading='async'}" data-sly-unwrap></meta>
+
+<!--/* defer */-->
+<meta data-sly-call="${clientLib.js @ categories='your.clientlib', loading='defer'}" data-sly-unwrap></meta>
+
+<!--/* defer and onload */-->
+<meta data-sly-call="${clientLib.js @ categories='your.clientlib', loading='defer', onload='myFunction()'}" data-sly-unwrap></meta>
+```
+
 ## TODO:
 
 * Write unit tests
