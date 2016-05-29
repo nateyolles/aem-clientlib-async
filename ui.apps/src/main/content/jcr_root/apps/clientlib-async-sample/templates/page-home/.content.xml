@@ -8,23 +8,5 @@
     <jcr:content
         jcr:primaryType="cq:PageContent"
         sling:resourceType="clientlib-async-sample/components/structure/page">
-        <logo
-            jcr:primaryType="nt:unstructured"
-            sling:resourceType="clientlib-async-sample/components/structure/logo"/>
-        <title
-            jcr:primaryType="nt:unstructured"
-            sling:resourceType="clientlib-async-sample/components/content/title"/>
-        <topnav
-            jcr:primaryType="nt:unstructured"
-            sling:resourceType="clientlib-async-sample/components/structure/topnav"/>
-        <par
-            jcr:primaryType="nt:unstructured"
-            sling:resourceType="wcm/foundation/components/parsys">
-            <text
-                jcr:primaryType="nt:unstructured"
-                sling:resourceType="clientlib-async-sample/components/content/text"
-                text="&lt;p>This is a home page&lt;/p>"
-                textIsRich="true"/>
-        </par>
     </jcr:content>
 </jcr:root>

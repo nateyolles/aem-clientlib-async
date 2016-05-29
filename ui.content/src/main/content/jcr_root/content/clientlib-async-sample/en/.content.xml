@@ -23,9 +23,6 @@
                 jcr:title="Service Component"
                 type="h2"
                 sling:resourceType="clientlib-async-sample/components/content/title"/>
-            <servicecomponent
-                jcr:primaryType="nt:unstructured"
-                sling:resourceType="clientlib-async-sample/components/content/helloworld"/>
             <title_1
                 jcr:primaryType="nt:unstructured"
                 jcr:title="Lorem ipsum"

@@ -1,19 +1,23 @@
 # Clientlib Async Sample project
 
-This project demonstrates how to create AEM clientlibs that can output 'async', 'defer' and 'onload' attributes on your HTML script elements.
+This project demonstrates how to create AEM clientlibs that can output 'async', 'defer' and 'onload' attributes on your HTML script elements. The new clientlib component works with or without [clientlib minification](http://localhost:4502/system/console/configMgr/com.day.cq.widget.impl.HtmlLibraryManagerImpl).
 
-## Project
+The Sightly templates where updated to accept _loading_ and _onload_ expression options:
 
-This project was created using the [AEM project archetype](https://github.com/Adobe-Marketing-Cloud/aem-project-archetype). See the archetype's documentation for further information on modules, building, testing and Maven settings. The archetype may be a little heavy handed for this small example. The files you should pay attention to are as follows:
-
-* /core/src/main/java/com/nateyolles/aem/clientlib/ClientLibUseObject.java
-* /ui.apps/src/main/content/jcr_root/apps/clientlib-async-sample/components/structure/page/partials/headlibs.html
 * /ui.apps/src/main/content/jcr_root/apps/clientlib-async-sample/sightly/templates/clientlib.html
 * /ui.apps/src/main/content/jcr_root/apps/clientlib-async-sample/sightly/templates/graniteClientLib.html
-* /ui.apps/src/main/content/jcr_root/etc/designs/clientlib-async-sample/clientlib-async-sample/js.txt
-* /ui.apps/src/main/content/jcr_root/etc/designs/clientlib-async-sample/clientlib-async-sample/script.js
 
-This project will work with or without [clientlib minification](http://localhost:4502/system/console/configMgr/com.day.cq.widget.impl.HtmlLibraryManagerImpl).
+The ClientLib Java class was updated to accept the _loading_ and _onload_ bindings:
+
+* /core/src/main/java/com/nateyolles/aem/clientlib/ClientLibUseObject.java
+
+The sample page using the new clientlib component:
+
+* /ui.apps/src/main/content/jcr_root/apps/clientlib-async-sample/components/structure/page/page.html
+
+Included is a sample JavaScript file which loads asynchronously and excutes a function on load: 
+
+* /ui.apps/src/main/content/jcr_root/etc/designs/clientlib-async-sample/clientlib-async-sample/script.js
 
 ## How to build
 
@@ -56,9 +60,3 @@ Use the clientlibs in your Sightly markup just as you would before (see [Sightly
 <!--/* defer and onload */-->
 <meta data-sly-call="${clientLib.js @ categories='your.clientlib', loading='defer', onload='myFunction()'}" data-sly-unwrap></meta>
 ```
-
-## TODO:
-
-* Write unit tests
-* Test with Themes
-* Test with Channels
