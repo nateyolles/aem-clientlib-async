@@ -1,15 +1,20 @@
 <!--/*
 **
 * This Sightly component overlays the default AEM 6 component located at
-* /libs/granite/sightly/templates/clientlib.html and contains three updates.
+* /libs/granite/sightly/templates/clientlib.html and contains four updates.
+*
+* See: https://github.com/nateyolles/aem-clientlib-async
 * 
-* 1) The addition of the "loading" expression option. This parameter accepts
+* 1) The addition of the "loading" expression option. This option accepts
 * "async" and "defer" and only affects JavaScript output.
 *
-* 2) The addition of the "onload" expression option. This option  only affects
+* 2) The addition of the "onload" expression option. This option only affects
 * JavaScript output.
 *
-* 3) Changing the data-sly-use value to use the overlayed Java class. If you
+* 3) The addition of the "crossorigin" expression option. This option affects
+* both stylesheet and JavaScript output.
+*
+* 4) Changing the data-sly-use value to use the overlayed Java class. If you
 * want to add the Java class to your custom package, you only need to update
 * this value.
 *
@@ -21,10 +26,11 @@
 <!--/*
     Template used for including CSS client libraries
 */-->
-<template data-sly-template.css="${@ categories='Client Library categories'}">
+<template data-sly-template.css="${@ categories='Client Library categories',
+                                     crossorigin='Accepts anonymous and use-credentials'}">
     <section data-sly-test="${request.getResourceResolver}"
              data-sly-use.clientlib="${'/apps/clientlib-async/sightly/templates/graniteClientLib.html'}"
-             data-sly-call="${clientlib.include @ categories=categories, mode='css'}"
+             data-sly-call="${clientlib.include @ categories=categories, mode='css', crossorigin=crossorigin}"
              data-sly-unwrap>
     </section>
 </template>
@@ -34,10 +40,11 @@
 */-->
 <template data-sly-template.js="${@ categories='Client Library categories',
                                     loading='Accepts async and defer',
-                                    onload='JavaScript to run for async and defer'}">
+                                    onload='JavaScript to run for async and defer',
+                                    crossorigin='Accepts anonymous and use-credentials'}">
     <section data-sly-test="${request.getResourceResolver}"
              data-sly-use.clientlib="${'/apps/clientlib-async/sightly/templates/graniteClientLib.html'}"
-             data-sly-call="${clientlib.include @ categories=categories, mode='js', loading=loading, onload=onload}"
+             data-sly-call="${clientlib.include @ categories=categories, mode='js', loading=loading, onload=onload, crossorigin=crossorigin}"
              data-sly-unwrap>
     </section>
 </template>
@@ -47,10 +54,11 @@
 */-->
 <template data-sly-template.all="${@ categories='Client Library categories',
                                      loading='Accepts async and defer',
-                                     onload='JavaScript to run for async and defer'}">
+                                     onload='JavaScript to run for async and defer',
+                                     crossorigin='Accepts anonymous and use-credentials'}">
     <section data-sly-test="${request.getResourceResolver}"
              data-sly-use.clientlib="${'/apps/clientlib-async/sightly/templates/graniteClientLib.html'}"
-             data-sly-call="${clientlib.include @ categories=categories, loading=loading, onload=onload}"
+             data-sly-call="${clientlib.include @ categories=categories, loading=loading, onload=onload, crossorigin=crossorigin}"
              data-sly-unwrap>
     </section>
 </template>

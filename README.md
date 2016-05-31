@@ -1,8 +1,8 @@
 # AEM Clientlib Async
 
-Create AEM clientlibs that can output `async`, `defer` and `onload` attributes on your HTML script elements. The new clientlib component works with or without [clientlib minification](http://localhost:4502/system/console/configMgr/com.day.cq.widget.impl.HtmlLibraryManagerImpl).
+Create AEM clientlibs that can output `async`, `defer`, `onload` and `crossorigin` attributes on your HTML script elements. The new clientlib component works with or without [clientlib minification](http://localhost:4502/system/console/configMgr/com.day.cq.widget.impl.HtmlLibraryManagerImpl).
 
-The Sightly templates where updated to accept `loading` and `onload` expression options. The ClientLib Java class was updated to accept the `loading` and `onload` bindings.
+The Sightly templates were updated to accept the new Sightly expression options and the ClientLib Java class was updated to accept the new bindings.
 
 * /ui.apps/src/main/content/jcr_root/apps/clientlib-async/sightly/templates/clientlib.html
 * /ui.apps/src/main/content/jcr_root/apps/clientlib-async/sightly/templates/graniteClientLib.html
@@ -49,7 +49,9 @@ Use the clientlibs in your Sightly markup just as you would before (see [Sightly
 </head>
 ```
 
-## Using 'async', 'defer' and 'onload'
+## Using 'async', 'defer', 'onload' and 'crossorigin'
+
+Valid values for `loading` are `async` and `defer`. Valid values for `crossorigin` are `anonymous` and `use-credentials`.
 
 ```
 <!--/* async */-->
@@ -60,6 +62,9 @@ Use the clientlibs in your Sightly markup just as you would before (see [Sightly
 
 <!--/* defer and onload */-->
 <meta data-sly-call="${clientLib.js @ categories='your.clientlib', loading='defer', onload='myFunction()'}" data-sly-unwrap></meta>
+
+<!--/* crossorigin */-->
+<meta data-sly-call="${clientLib.all @ categories='your.clientlib', crossorigin='anonymous'}" data-sly-unwrap></meta>
 ```
 
 ## License

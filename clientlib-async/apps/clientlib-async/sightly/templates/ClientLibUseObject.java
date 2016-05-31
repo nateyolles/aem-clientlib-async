@@ -27,7 +27,9 @@ import io.sightly.java.api.Use;
 
 /**
  * Sightly Clientlibs that can accept expression options for 'defer', 'async'
- * and 'onload'.
+ * 'onload' and 'crossorigin'.
+ *
+ * See: https://github.com/nateyolles/aem-clientlib-async
  *
  * This class is mostly code from /libs/granite/sightly/templates/ClientLibUseObjec.java,
  * found in your local AEM instance. The differences are that this class gets
@@ -48,26 +50,33 @@ public class ClientLibUseObject implements Use {
     private static final String BINDINGS_MODE = "mode";
 
     /**
-     * Sightly parameter that becomes the script element void attribute such as 'defer' and 'async'.
-     * Valid values are listed in {@link #VALID_ATTRIBUTES}.
+     * Sightly parameter that becomes the script element void attribute such as
+     * 'defer' and 'async'. Valid values are listed in {@link #VALID_JS_ATTRIBUTES}.
      */
     private static final String BINDINGS_LOADING = "loading";
 
     /**
-     * Sightly parameter that becomes the javascript function value in the script element's 'onload'
-     * attribute.
+     * Sightly parameter that becomes the javascript function value in the
+     * script element's 'onload' attribute.
      */
     private static final String BINDINGS_ONLOAD = "onload";
 
     /**
-     * HTML markup for javascript. Add 'type="text/javascript"' if you are not using HTML 5.
+     * Sightly parameter that becomes the value in the script and link elements'
+     * 'crossorigin' attribute.
+     */
+    private static final String BINDINGS_CROSS_ORIGIN = "crossorigin";
+
+    /**
+     * HTML markup for javascript. Add 'type="text/javascript"' if you are not
+     * using HTML 5.
      */
     private static final String TAG_JAVASCRIPT = "<script src=\"%s\"%s></script>";
 
     /**
      * HTML markup for stylesheets.
      */
-    private static final String TAG_STYLESHEET = "<link rel=\"stylesheet\" href=\"%s\">";
+    private static final String TAG_STYLESHEET = "<link rel=\"stylesheet\" href=\"%s\"%s>";
 
     /**
      * HTML markup for onload attribute of script element.
@@ -75,11 +84,25 @@ public class ClientLibUseObject implements Use {
     private static final String ONLOAD_ATTRIBUTE = " onload=\"%s\"";
 
     /**
+     * HTML markup for crossorigin attribute of script and link elements.
+     */
+    private static final String CROSS_ORIGIN_ATTRIBUTE = " crossorigin=\"%s\"";
+
+    /**
      * Valid void attributes for HTML markup of script element.
      */
-    private static final List<String> VALID_ATTRIBUTES = new ArrayList<String>(){{
+    private static final List<String> VALID_JS_ATTRIBUTES = new ArrayList<String>(){{
         add("async");
         add("defer");
+    }};
+
+    /**
+     * Valid values for crossorigin attribute for HTML markup of script and link
+     * elements.
+     */
+    private static final List<String> VALID_CROSS_ORIGIN_VALUES = new ArrayList<String>(){{
+        add("anonymous");
+        add("use-credentials");
     }};
 
     private HtmlLibraryManager htmlLibraryManager = null;
@@ -87,6 +110,7 @@ public class ClientLibUseObject implements Use {
     private String mode;
     private String loadingAttribute;
     private String onloadAttribute;
+    private String crossoriginAttribute;
     private SlingHttpServletRequest request;
     private PrintWriter out;
     private Logger log;
@@ -102,6 +126,7 @@ public class ClientLibUseObject implements Use {
     public void init(Bindings bindings) {
         loadingAttribute = (String) bindings.get(BINDINGS_LOADING);
         onloadAttribute = (String) bindings.get(BINDINGS_ONLOAD);
+        crossoriginAttribute = (String) bindings.get(BINDINGS_CROSS_ORIGIN);
         resource = (Resource) bindings.get("resource");
 
         Object categoriesObject = bindings.get(BINDINGS_CATEGORIES);
@@ -171,10 +196,10 @@ public class ClientLibUseObject implements Use {
         if (htmlLibraryManager != null && libraryType != null && xssAPI != null) { 
             Collection<ClientLibrary> libs = htmlLibraryManager.getLibraries(categories, libraryType, false, false);
 
-            if (libraryType.equals(LibraryType.JS)) {
-                String attribute = StringUtils.EMPTY;
+            String attribute = StringUtils.EMPTY;
 
-                if (StringUtils.isNotBlank(loadingAttribute) && VALID_ATTRIBUTES.contains(loadingAttribute.toLowerCase())) {
+            if (libraryType.equals(LibraryType.JS)) {
+                if (StringUtils.isNotBlank(loadingAttribute) && VALID_JS_ATTRIBUTES.contains(loadingAttribute.toLowerCase())) {
                     attribute = " ".concat(loadingAttribute.toLowerCase());
                 }
 
@@ -185,14 +210,14 @@ public class ClientLibUseObject implements Use {
                         attribute = attribute.concat(String.format(ONLOAD_ATTRIBUTE, safeOnload));
                     }
                 }
+            }
 
-                for (ClientLibrary lib : libs) {
-                    out.write(String.format(TAG_JAVASCRIPT, lib.getIncludePath(libraryType, htmlLibraryManager.isMinifyEnabled()), attribute));
-                }
-            } else if (libraryType.equals(LibraryType.CSS)) {
-                for (ClientLibrary lib : libs) {
-                    out.write(String.format(TAG_STYLESHEET, lib.getIncludePath(libraryType, htmlLibraryManager.isMinifyEnabled())));
-                }
+            if (StringUtils.isNotBlank(crossoriginAttribute) && VALID_CROSS_ORIGIN_VALUES.contains(crossoriginAttribute.toLowerCase())) {
+                attribute = attribute.concat(String.format(CROSS_ORIGIN_ATTRIBUTE, crossoriginAttribute.toLowerCase()));
+            }
+
+            for (ClientLibrary lib : libs) {
+                out.write(String.format(libraryType.equals(LibraryType.JS) ? TAG_JAVASCRIPT : TAG_STYLESHEET, lib.getIncludePath(libraryType, htmlLibraryManager.isMinifyEnabled()), attribute));
             }
         }
     }

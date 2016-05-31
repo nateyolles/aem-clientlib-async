@@ -1,16 +1,21 @@
 <!--/*
 **
 * This Sightly component overlays the default AEM 6 component located at
-* /libs/granite/sightly/templates/graniteClientLib.html and contains three
+* /libs/granite/sightly/templates/graniteClientLib.html and contains four
 * updates.
+*
+* See: https://github.com/nateyolles/aem-clientlib-async
 * 
 * 1) The addition of the "loading" expression option. This option accepts
 * "async" and "defer" and only affects JavaScript output.
 *
-* 2) The addition of the "onload" expression option. This option  only affects
+* 2) The addition of the "onload" expression option. This option only affects
 * JavaScript output.
 *
-* 3) Changing the data-sly-use value to use the overlayed Java class. If you
+* 3) The addition of the "crossorigin" expression option. This option affects
+* both stylesheet and JavaScript output.
+*
+* 4) Changing the data-sly-use value to use the overlayed Java class. If you
 * want to add the Java class to your custom package, you only need to update
 * this value.
 *
@@ -21,7 +26,8 @@
 <template data-sly-template.include="${@ categories='Client Library categories',
                                          mode='optional: JS or CSS, case-insensitve',
                                          loading='optional: JS async or defer',
-                                         onload='optional: JS to run for async and defer'}"
-    data-sly-use.clientlib="${'apps.clientlib_async.sightly.templates.ClientLibUseObject' @ categories=categories, mode=mode, loading=loading, onload=onload}">
+                                         onload='optional: JS to run for async and defer',
+                                         crossorigin='optional: accepts anonymous and use-credentials'}"
+    data-sly-use.clientlib="${'apps.clientlib_async.sightly.templates.ClientLibUseObject' @ categories=categories, mode=mode, loading=loading, onload=onload, crossorigin=crossorigin}">
 ${clientlib.include @ context='unsafe'}
 </template>
