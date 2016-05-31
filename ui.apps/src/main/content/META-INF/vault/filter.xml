@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<workspaceFilter version="1.0">
-    <filter root="/apps/clientlib-async-sample">
-        <exclude pattern="/apps/clientlib-async-sample/install" />
-    </filter>
-    <filter root="/apps/sling" />
-    <filter root="/etc/designs/clientlib-async-sample"/>
-</workspaceFilter>
