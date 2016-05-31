@@ -26,14 +26,15 @@ import org.slf4j.Logger;
 import io.sightly.java.api.Use;
 
 /**
- * Sightly Clientlibs that can accept attributes for 'defer', 'async' and 'onload'.
+ * Sightly Clientlibs that can accept expression options for 'defer', 'async'
+ * and 'onload'.
  *
- * This class is mostly code from /libs/granite/sightly/templates/ClientLibUseObjec.java file found
- * in your default AEM instance. The differences are that this class gets the 'loading' and 'onload'
- * attributes, gets the categories retrieved from
+ * This class is mostly code from /libs/granite/sightly/templates/ClientLibUseObjec.java,
+ * found in your local AEM instance. The differences are that this class gets
+ * the 'loading' and 'onload' attributes, gets the categories retrieved from
  * {@link com.day.cq.widget.HtmlLibraryManager#getLibraries(String[], LibraryType, boolean, boolean)}
- * and writes it's own HTML script elements rather than have the HtmlLibrary manger do it for us using
- * {@link com.day.cq.widget.HtmlLibraryManager#writeIncludes(SlingHttpServletRequest, Writer, String...)}.
+ * and writes it's own HTML script elements rather than have the HtmlLibrary
+ * manger do it for us using {@link com.day.cq.widget.HtmlLibraryManager#writeIncludes(SlingHttpServletRequest, Writer, String...)}.
  *
  * @author    Nate Yolles <yolles@adobe.com>
  * @version   2.0.0
@@ -50,7 +51,7 @@ public class ClientLibUseObject implements Use {
      * Sightly parameter that becomes the script element void attribute such as 'defer' and 'async'.
      * Valid values are listed in {@link #VALID_ATTRIBUTES}.
      */
-    private static final String BINDINGS_ATTRIBUTE = "loading";
+    private static final String BINDINGS_LOADING = "loading";
 
     /**
      * Sightly parameter that becomes the javascript function value in the script element's 'onload'
@@ -84,7 +85,7 @@ public class ClientLibUseObject implements Use {
     private HtmlLibraryManager htmlLibraryManager = null;
     private String[] categories;
     private String mode;
-    private String additionalAttribute;
+    private String loadingAttribute;
     private String onloadAttribute;
     private SlingHttpServletRequest request;
     private PrintWriter out;
@@ -93,12 +94,13 @@ public class ClientLibUseObject implements Use {
     private XSSAPI xssAPI;
 
     /**
-     * Same as AEM provided method with the addition of getting the XSSAPI service.
+     * Same as AEM provided method with the addition of getting the XSSAPI
+     * service and the two additional bindings for loading and onload.
      * 
      * @see libs.granite.sightly.templates.ClientLibUseObject#init(Bindings)
      */
     public void init(Bindings bindings) {
-        additionalAttribute = (String) bindings.get(BINDINGS_ATTRIBUTE);
+        loadingAttribute = (String) bindings.get(BINDINGS_LOADING);
         onloadAttribute = (String) bindings.get(BINDINGS_ONLOAD);
         resource = (Resource) bindings.get("resource");
 
@@ -132,8 +134,9 @@ public class ClientLibUseObject implements Use {
     }
 
     /**
-     * Essentially the same as the AEM provided method with the exception that the
-     * HtmlLibraryManger's writeIncludes methods have been replaced.
+     * Essentially the same as the AEM provided method with the exception that
+     * the HtmlLibraryManger's writeIncludes methods have been replaced with
+     * calls to #includeLibraries.
      * 
      * @see libs.granite.sightly.templates.ClientLibUseObject#include()
      */
@@ -171,8 +174,8 @@ public class ClientLibUseObject implements Use {
             if (libraryType.equals(LibraryType.JS)) {
                 String attribute = StringUtils.EMPTY;
 
-                if (StringUtils.isNotBlank(additionalAttribute) && VALID_ATTRIBUTES.contains(additionalAttribute.toLowerCase())) {
-                    attribute = " ".concat(additionalAttribute.toLowerCase());
+                if (StringUtils.isNotBlank(loadingAttribute) && VALID_ATTRIBUTES.contains(loadingAttribute.toLowerCase())) {
+                    attribute = " ".concat(loadingAttribute.toLowerCase());
                 }
 
                 if (StringUtils.isNotBlank(onloadAttribute)) {
