@@ -18,11 +18,11 @@ Included is a sample JavaScript file which loads asynchronously and excutes a fu
 
 ## Install
 
-A package is provided in the /package folder. Install it with Package Manager at [http://localhost:4502/crx/packmgr/index.jsp](http://localhost:4502/crx/packmgr/index.jsp) or you can copy the `/apps/clientlib-async` folder into your project.
+A package is provided in the `/package` folder. Install it with Package Manager at [http://localhost:4502/crx/packmgr/index.jsp](http://localhost:4502/crx/packmgr/index.jsp) or you can copy the `/apps/clientlib-async` folder into your project.
 
 ## How to build
 
-You can build and deploy to a running AEM instance with default values of port `4502`, user `admin` and password `admin`. Navigate to the /demo directory and run:
+You can build and deploy to a running AEM instance with default values of port `4502`, user `admin` and password `admin`. Navigate to the `/demo` directory and run:
 
     mvn clean install -PautoInstallPackage
 
