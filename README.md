@@ -1,6 +1,6 @@
-# AEM Clientlib Async Sample project
+# AEM Clientlib Async
 
-This project demonstrates how to create AEM clientlibs that can output `async`, `defer` and `onload` attributes on your HTML script elements. The new clientlib component works with or without [clientlib minification](http://localhost:4502/system/console/configMgr/com.day.cq.widget.impl.HtmlLibraryManagerImpl).
+Create AEM clientlibs that can output `async`, `defer` and `onload` attributes on your HTML script elements. The new clientlib component works with or without [clientlib minification](http://localhost:4502/system/console/configMgr/com.day.cq.widget.impl.HtmlLibraryManagerImpl).
 
 The Sightly templates where updated to accept `loading` and `onload` expression options. The ClientLib Java class was updated to accept the `loading` and `onload` bindings.
 
