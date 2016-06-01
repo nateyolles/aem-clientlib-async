@@ -1,5 +1,7 @@
 # AEM Clientlib Async
 
+See [http://www.nateyolles.com/blog/2016/06/custom-aem-html5-async-clientlibs](http://www.nateyolles.com/blog/2016/06/custom-aem-html5-async-clientlibs) for a detailed description regarding this project and how Sightly clientlibs work.
+
 Create AEM clientlibs that can output `async`, `defer`, `onload` and `crossorigin` attributes on your HTML script elements. The new clientlib component works with or without [clientlib minification](http://localhost:4502/system/console/configMgr/com.day.cq.widget.impl.HtmlLibraryManagerImpl).
 
 The Sightly templates were updated to accept the new Sightly expression options and the ClientLib Java class was updated to accept the new bindings.
