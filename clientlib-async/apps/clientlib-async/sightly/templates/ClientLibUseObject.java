@@ -167,22 +167,23 @@ public class ClientLibUseObject implements Use {
      */
     public String include() {
         StringWriter sw = new StringWriter();
-
-        if (categories == null || categories.length == 0)  {
-            log.error("'categories' option might be missing from the invocation of the /apps/beagle/sightly/templates/clientlib.html" +
-                    "client libraries template library. Please provide a CSV list or an array of categories to include.");
-        } else {
-            PrintWriter out = new PrintWriter(sw);
-            if ("js".equalsIgnoreCase(mode)) {
-                includeLibraries(out, LibraryType.JS);
-            } else if ("css".equalsIgnoreCase(mode)) {
-                includeLibraries(out, LibraryType.CSS);
+        try {
+            if (categories == null || categories.length == 0)  {
+                log.error("'categories' option might be missing from the invocation of the /libs/granite/sightly/templates/clientlib.html" +
+                        "client libraries template library. Please provide a CSV list or an array of categories to include.");
             } else {
-                includeLibraries(out, LibraryType.CSS);
-                includeLibraries(out, LibraryType.JS);
+                PrintWriter out = new PrintWriter(sw);
+                if ("js".equalsIgnoreCase(mode)) {
+                    htmlLibraryManager.writeJsInclude(request, out, categories);
+                } else if ("css".equalsIgnoreCase(mode)) {
+                    htmlLibraryManager.writeCssInclude(request, out, categories);
+                } else {
+                    htmlLibraryManager.writeIncludes(request, out, categories);
+                }
             }
+        } catch (IOException e) {
+            log.error("Failed to include client libraries {}", categories);
         }
-
         return sw.toString();
     }
 
