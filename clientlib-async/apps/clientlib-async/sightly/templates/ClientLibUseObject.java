@@ -15,15 +15,15 @@ import org.apache.sling.api.scripting.SlingBindings;
 import org.apache.sling.api.scripting.SlingScriptHelper;
 import org.apache.sling.api.resource.Resource;
 
-import com.day.cq.widget.ClientLibrary;
-import com.day.cq.widget.HtmlLibraryManager;
-import com.day.cq.widget.LibraryType;
+import com.adobe.granite.ui.clientlibs.ClientLibrary;
+import com.adobe.granite.ui.clientlibs.HtmlLibraryManager;
+import com.adobe.granite.ui.clientlibs.LibraryType;
 
 import com.adobe.granite.xss.XSSAPI;
 
 import org.slf4j.Logger;
 
-import io.sightly.java.api.Use;
+import org.apache.sling.scripting.sightly.pojo.Use;
 
 /**
  * Sightly Clientlibs that can accept expression options for 'defer', 'async'
