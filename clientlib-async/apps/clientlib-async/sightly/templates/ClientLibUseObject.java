@@ -19,7 +19,7 @@ import com.adobe.granite.ui.clientlibs.ClientLibrary;
 import com.adobe.granite.ui.clientlibs.HtmlLibraryManager;
 import com.adobe.granite.ui.clientlibs.LibraryType;
 
-import com.adobe.granite.xss.XSSAPI;
+import org.apache.sling.xss.XSSAPI;
 
 import org.slf4j.Logger;
 
@@ -76,7 +76,7 @@ public class ClientLibUseObject implements Use {
     /**
      * HTML markup for stylesheets.
      */
-    private static final String TAG_STYLESHEET = "<link rel=\"stylesheet\" href=\"%s\"%s>";
+    private static final String TAG_STYLESHEET = "<link rel=\"stylesheet\" href=\"%s\"%s type=\"text/css\">";
 
     /**
      * HTML markup for onload attribute of script element.
@@ -130,6 +130,7 @@ public class ClientLibUseObject implements Use {
         resource = (Resource) bindings.get("resource");
 
         Object categoriesObject = bindings.get(BINDINGS_CATEGORIES);
+        log = (Logger) bindings.get(SlingBindings.LOG);
         if (categoriesObject != null) {
             if (categoriesObject instanceof Object[]) {
                 Object[] categoriesArray = (Object[]) categoriesObject;
@@ -150,7 +151,6 @@ public class ClientLibUseObject implements Use {
             if (categories != null && categories.length > 0) {
                 mode = (String) bindings.get(BINDINGS_MODE);
                 request = (SlingHttpServletRequest) bindings.get(SlingBindings.REQUEST);
-                log = (Logger) bindings.get(SlingBindings.LOG);
                 SlingScriptHelper sling = (SlingScriptHelper) bindings.get(SlingBindings.SLING);
                 htmlLibraryManager = sling.getService(HtmlLibraryManager.class);
                 xssAPI = sling.getService(XSSAPI.class);
@@ -217,8 +217,34 @@ public class ClientLibUseObject implements Use {
             }
 
             for (ClientLibrary lib : libs) {
-                out.write(String.format(libraryType.equals(LibraryType.JS) ? TAG_JAVASCRIPT : TAG_STYLESHEET, lib.getIncludePath(libraryType, htmlLibraryManager.isMinifyEnabled()), attribute));
+                String path = getIncludePath(request, lib, libraryType, htmlLibraryManager.isMinifyEnabled());
+
+                if (path != null) {
+                    out.format(libraryType.equals(LibraryType.JS) ? TAG_JAVASCRIPT : TAG_STYLESHEET, path, attribute);
+                }
             }
         }
+    }
+
+    /**
+     * Returns the include path for the given library and type, respecting the proxy settings.
+     * @param lib library
+     * @param type type
+     * @param minify {@code true} for minify
+     * @return the path
+     *
+     * @see com.adobe.granite.ui.clientlibs.impl.HtmlLibraryWriter#getIncludePath(SlingHttpServletRequest, ClientLibrary, LibraryType, boolean)
+     */
+    private String getIncludePath(SlingHttpServletRequest request, ClientLibrary lib, LibraryType type, boolean minify) {
+        String path = lib.getIncludePath(type, minify);
+        if (lib.allowProxy() && (path.startsWith("/libs/") || path.startsWith("/apps/"))) {
+            path = "/etc.clientlibs" + path.substring(5);
+        } else {
+            // check if request session has access (GRANITE-4429)
+            if (request.getResourceResolver().getResource(lib.getPath()) == null) {
+                path = null;
+            }
+        }
+        return path;
     }
 }

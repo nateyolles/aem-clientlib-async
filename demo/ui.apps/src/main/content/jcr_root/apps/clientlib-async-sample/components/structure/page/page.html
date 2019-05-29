@@ -8,15 +8,20 @@
 
         <!--/* Load script asynchronously and call function on load */-->
         <sly data-sly-use.clientLibAsync="/apps/clientlib-async/sightly/templates/clientlib.html" data-sly-call="${clientLibAsync.js @ categories='clientlib-async-sample.async-sample', loading='async', onload='sayHello()'}" data-sly-unwrap/>
+
+        <!--/* Load proxy script asynchronously and call function on load */-->
+        <sly data-sly-use.clientLibAsync="/apps/clientlib-async/sightly/templates/clientlib.html" data-sly-call="${clientLibAsync.js @ categories='clientlib-async-sample.async-proxy-sample', loading='async', onload='sayHello()'}" data-sly-unwrap/>
     </head>
     <body>
         <h1>Clientlib Async Sample</h1>
 
-        <p>This page includes a Javascript client library using the custom <em>loading</em> and <em>onload</em> properties. The following Sightly tag is being used:</p>
+        <p>This page includes two Javascript client libraries using the custom <em>loading</em> and <em>onload</em> properties. The following Sightly tag is being used:</p>
 
         <code>
             &lt;sly data-sly-use.clientLibAsync="/apps/clientlib-async/sightly/templates/clientlib.html" data-sly-call="&dollar;&lcub;clientLibAsync.js @ categories='clientlib-async-sample.async-sample', loading='async', onload='sayHello()'&rcub;" data-sly-unwrap/&gt;
         </code>
+
+        <p>In addition, there's a sample using Clientlib Proxies.</p>
 
         <p>Notice the addition of the "loading" expression option. This parameter accepts "async" and "defer" and only affects JavaScript output. Also notice the addition of the "onload" expression option. This option also only affects JavaScript output.</p>
     </body>
