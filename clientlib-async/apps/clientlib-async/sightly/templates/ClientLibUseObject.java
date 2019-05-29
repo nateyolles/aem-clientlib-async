@@ -71,7 +71,7 @@ public class ClientLibUseObject implements Use {
      * HTML markup for javascript. Add 'type="text/javascript"' if you are not
      * using HTML 5.
      */
-    private static final String TAG_JAVASCRIPT = "<script src=\"%s\"%s></script>";
+    private static final String TAG_JAVASCRIPT = "<script type=\"text/javascript\" src=\"%s\"%s></script>";
 
     /**
      * HTML markup for stylesheets.
