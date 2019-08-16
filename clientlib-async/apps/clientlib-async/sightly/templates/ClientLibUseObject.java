@@ -76,7 +76,8 @@ public class ClientLibUseObject implements Use {
     /**
      * HTML markup for stylesheets.
      */
-    private static final String TAG_STYLESHEET = "<link rel=\"stylesheet\" href=\"%s\"%s type=\"text/css\">";
+    private static final String TAG_STYLESHEET_PRELOAD	= "<link rel=\"preload\" href=\"%s\"%s as=\"style\">";
+    private static final String TAG_STYLESHEET_INIT = "<link rel=\"stylesheet\" href=\"%s\"%s media=\"print\" type=\"text/css\" onload=\"this.media='all'\">";
 
     /**
      * HTML markup for onload attribute of script element.
@@ -220,7 +221,13 @@ public class ClientLibUseObject implements Use {
                 String path = getIncludePath(request, lib, libraryType, htmlLibraryManager.isMinifyEnabled());
 
                 if (path != null) {
-                    out.format(libraryType.equals(LibraryType.JS) ? TAG_JAVASCRIPT : TAG_STYLESHEET, path, attribute);
+                    if (libraryType.equals(LibraryType.CSS)) {
+                        out.format(TAG_STYLESHEET_PRELOAD, path, attribute);
+                        out.format(TAG_STYLESHEET_INIT, path, attribute);
+                    }
+                    if (libraryType.equals(LibraryType.JS)) {
+                        out.format(TAG_JAVASCRIPT, path, attribute);
+                    }
                 }
             }
         }
